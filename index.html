@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java 技术博客</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        .smooth { transition: all 0.3s ease; }
+        .smooth:hover { transform: scale(1.02); }
+    </style>
+</head>
+<body class="bg-white text-gray-800 antialiased">
+    <header class="bg-white shadow-sm">
+        <nav class="max-w-7xl mx-auto px-4 py-6 flex justify-between items-center">
+            <h1 class="text-2xl font-light">Java 技术探索</h1>
+            <ul class="flex space-x-6">
+                <li><a href="index.html" class="text-gray-600 hover:text-black smooth">主页</a></li>
+                <li><a href="history.html" class="text-gray-600 hover:text-black smooth">发展历程</a></li>
+                <li><a href="cases.html" class="text-gray-600 hover:text-black smooth">著名案例</a></li>
+                <li><a href="ecosystem.html" class="text-gray-600 hover:text-black smooth">生态概述</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 py-16">
+        <section class="text-center mb-16">
+            <h2 class="text-5xl font-light mb-4">探索 Java 的无限可能</h2>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">Java 作为一种跨平台、可靠的技术，已驱动无数创新。从其诞生到 2026 年的生态演进，这里聚焦于技术本身。</p>
+        </section>
+
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <a href="history.html" class="block bg-gray-50 p-8 rounded-lg shadow-sm smooth">
+                <h3 class="text-2xl font-light mb-2">发展历程</h3>
+                <p class="text-gray-600">从 1991 年起源到现代版本的演进。</p>
+            </a>
+            <a href="cases.html" class="block bg-gray-50 p-8 rounded-lg shadow-sm smooth">
+                <h3 class="text-2xl font-light mb-2">著名案例</h3>
+                <p class="text-gray-600">Java 在 NASA、Android 等领域的应用。</p>
+            </a>
+            <a href="ecosystem.html" class="block bg-gray-50 p-8 rounded-lg shadow-sm smooth">
+                <h3 class="text-2xl font-light mb-2">生态概述</h3>
+                <p class="text-gray-600">框架、工具和 2026 年趋势。</p>
+            </a>
+        </section>
+    </main>
+
+    <footer class="bg-white py-8 text-center text-gray-500">
+        <p>&copy; 2026 Java 技术博客</p>
+    </footer>
+</body>
+</html>
