@@ -1,0 +1,437 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DropSort Pro | 智能文件归类</title>
+<style>
+/* 全局重置 */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { 
+    width: 100%; 
+    height: 100%; 
+    overflow-x: hidden; 
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: #0f172a;
+}
+
+/* --- 背景层 (绝对底层) --- */
+.background-layer {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: -999;
+    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%);
+    overflow: hidden;
+    pointer-events: none;
+}
+.orb {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.4;
+    animation: float 20s infinite ease-in-out;
+    will-change: transform;
+}
+.o1 { width: 500px; height: 500px; background: #4f46e5; top: -100px; left: -100px; }
+.o2 { width: 600px; height: 600px; background: #7c3aed; bottom: -150px; right: -150px; animation-delay: -5s; }
+.o3 { width: 300px; height: 300px; background: #06b6d4; top: 40%; left: 60%; animation-delay: -10s; opacity: 0.3; }
+@keyframes float {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(30px, 50px); }
+}
+
+/* --- 内容层 (绝对顶层) --- */
+.content-wrapper {
+    position: relative;
+    z-index: 999;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    color: #f8fafc;
+}
+
+/* 导航 */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 5%;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.logo {
+    font-size: 1.5rem;
+    font-weight: 800;
+    background: linear-gradient(to right, #fff, #a5b4fc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.nav-links { display: flex; align-items: center; gap: 2rem; }
+.nav-a { color: #94a3b8; text-decoration: none; font-size: 0.95rem; transition: 0.3s; }
+.nav-a:hover { color: #fff; }
+.btn-n {
+    background: rgba(255,255,255,0.1);
+    padding: 0.6rem 1.2rem;
+    border-radius: 50px;
+    color: #fff !important;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Hero 区域 */
+.hero {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 10rem 5% 4rem; /* 增加顶部padding防止被导航遮挡 */
+    position: relative;
+}
+h1 {
+    font-size: clamp(3rem, 8vw, 5rem);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    opacity: 0;
+    animation: fadeUp 1s forwards 0.2s;
+}
+p.sub {
+    font-size: clamp(1.1rem, 2vw, 1.5rem);
+    color: #94a3b8;
+    max-width: 700px;
+    margin-bottom: 3rem;
+    line-height: 1.6;
+    opacity: 0;
+    animation: fadeUp 1s forwards 0.4s;
+}
+.cta {
+    display: flex;
+    gap: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 1s forwards 0.6s;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.btn {
+    padding: 1rem 2.5rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: all 0.3s;
+    cursor: pointer;
+    white-space: nowrap;
+}
+.btn-p {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: #fff;
+    box-shadow: 0 10px 30px -10px rgba(99, 102, 241, 0.6);
+    border: none;
+}
+.btn-p:hover { transform: translateY(-3px); box-shadow: 0 20px 40px -10px rgba(99, 102, 241, 0.8); }
+.btn-s {
+    background: rgba(255,255,255,0.05);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.2);
+    backdrop-filter: blur(5px);
+}
+.btn-s:hover { background: rgba(255,255,255,0.15); border-color: #fff; }
+
+/* 演示区 */
+.demo-container {
+    margin-top: 4rem;
+    width: 100%;
+    max-width: 900px;
+    height: 400px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 20px 50px -10px rgba(0,0,0,0.5);
+    opacity: 0;
+    animation: fadeUp 1s forwards 0.8s;
+}
+.drop-zone {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%; height: 70%;
+    border: 2px dashed rgba(255,255,255,0.2);
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #94a3b8;
+    font-size: 1.2rem;
+    transition: all 0.3s;
+    background: rgba(0,0,0,0.2);
+}
+.drop-zone.active {
+    border-color: #6366f1;
+    background: rgba(99, 102, 241, 0.15);
+    color: #fff;
+    box-shadow: 0 0 30px rgba(99, 102, 241, 0.3);
+}
+.floating-file {
+    position: absolute;
+    width: 60px; height: 70px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 8px;
+    display: flex; justify-content: center; align-items: center;
+    font-size: 24px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    animation: flyIn 4s infinite ease-in-out;
+}
+.f1 { top: 20%; left: 10%; }
+.f2 { top: 30%; right: 15%; animation-delay: 1s; }
+.f3 { bottom: 25%; left: 20%; animation-delay: 2s; }
+
+@keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+@keyframes flyIn {
+    0% { transform: translate(0, 0) scale(0.8); opacity: 0; }
+    20% { opacity: 1; }
+    50% { transform: translate(100px, 150px) scale(1); }
+    80% { transform: translate(-50px, -50px) scale(0.9); }
+    100% { transform: translate(0, 0) scale(0.8); opacity: 0; }
+}
+
+/* --- 核心特性区域 (修复重点) --- */
+.features { 
+    padding: 6rem 5%; 
+    width: 100%;
+    max-width: 1400px; /* 增加最大宽度，防止在大屏上被压缩 */
+    margin: 0 auto; 
+}
+.section-header { text-align: center; margin-bottom: 4rem; }
+.section-header h2 { font-size: 2.5rem; margin-bottom: 1rem; }
+.section-header p { color: #94a3b8; font-size: 1.1rem; }
+
+/* 网格布局修复：强制桌面端3列，平板2列，手机1列 */
+.grid { 
+    display: grid; 
+    /* 关键修改：最小宽度设为280px，保证能放下3个；auto-fit自动填充 */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+    gap: 2rem; 
+    width: 100%;
+}
+
+.card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.05);
+    padding: 2.5rem;
+    border-radius: 16px;
+    transition: 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.card:hover { 
+    transform: translateY(-5px); 
+    background: rgba(255,255,255,0.06); 
+    border-color: rgba(255,255,255,0.15); 
+}
+.icon-box {
+    width: 50px; height: 50px;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    border-radius: 12px;
+    display: flex; justify-content: center; align-items: center;
+    margin-bottom: 1.5rem; 
+    font-size: 1.5rem;
+    flex-shrink: 0; /* 防止图标被压缩 */
+}
+.card h3 { 
+    font-size: 1.25rem; 
+    margin-bottom: 1rem; 
+    color: #fff; 
+    width: 100%;
+}
+.card p { 
+    color: #94a3b8; 
+    font-size: 0.95rem; 
+    line-height: 1.6; 
+    flex-grow: 1; /* 让文字填满剩余空间，保持卡片高度一致 */
+}
+
+.tech-stack {
+    background: rgba(0,0,0,0.2);
+    padding: 3rem 5%;
+    text-align: center;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.tech-logos { 
+    display: flex; 
+    justify-content: center; 
+    gap: 2rem; 
+    margin-top: 1.5rem; 
+    flex-wrap: wrap; 
+    color: #94a3b8; 
+    font-weight: 700; 
+}
+
+footer { padding: 3rem 5%; text-align: center; color: #64748b; font-size: 0.9rem; }
+.footer-links { margin-bottom: 1.5rem; }
+.footer-links a { color: #64748b; margin: 0 1rem; text-decoration: none; transition: 0.3s; }
+.footer-links a:hover { color: #fff; }
+
+/* --- 响应式断点 --- */
+@media(max-width: 1024px) {
+    /* 平板：强制2列 */
+    .grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media(max-width: 768px) {
+    h1 { font-size: 2.5rem; }
+    .cta { flex-direction: column; width: 100%; }
+    .btn { width: 100%; text-align: center; }
+    .nav-links { display: none; }
+    
+    /* 手机：强制1列 */
+    .grid { grid-template-columns: 1fr; }
+    
+    .hero { padding-top: 8rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- 背景层 -->
+<div class="background-layer">
+    <div class="orb o1"></div>
+    <div class="orb o2"></div>
+    <div class="orb o3"></div>
+</div>
+
+<!-- 内容层 -->
+<div class="content-wrapper">
+    
+    <nav>
+        <div class="logo">DropSort Pro</div>
+        <div class="nav-links">
+            <a href="#features" class="nav-a">功能特性</a>
+            <a href="#tech" class="nav-a">技术架构</a>
+            <a href="#" class="nav-a btn-n">下载 Beta</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1>拖拽之间<br>秩序井然</h1>
+        <p class="sub">基于 Rust 构建的下一代桌面文件整理工具。<br>将杂乱的文件拖入窗口，瞬间自动归类。</p>
+        
+        <div class="cta">
+            <a href="#" class="btn btn-p">免费下载 Windows/macOS</a>
+            <a href="#features" class="btn btn-s">了解更多</a>
+        </div>
+
+        <div class="demo-container" id="demoZone">
+            <div class="drop-zone" id="dropText">
+                <span>✨ 拖拽文件至此体验智能分类</span>
+            </div>
+            <div class="floating-file f1">🖼️</div>
+            <div class="floating-file f2">🎬</div>
+            <div class="floating-file f3">📄</div>
+        </div>
+    </section>
+
+    <section class="features" id="features">
+        <div class="section-header">
+            <h2>核心特性</h2>
+            <p>重塑您的数字工作流</p>
+        </div>
+        <div class="grid">
+            <div class="card">
+                <div class="icon-box">⚡</div>
+                <h3>Rust 极速核心</h3>
+                <p>摒弃沉重框架，Rust 引擎毫秒级响应，处理千个大文件依然流畅。</p>
+            </div>
+            <div class="card">
+                <div class="icon-box">🧠</div>
+                <h3>智能规则引擎</h3>
+                <p>内置常用模板，支持自定义正则。让每个文件去往它该去的地方。</p>
+            </div>
+            <div class="card">
+                <div class="icon-box">🛡️</div>
+                <h3>安全零丢失</h3>
+                <p>原子化操作，智能冲突检测。确保您的珍贵数据万无一失。</p>
+            </div>
+            <div class="card">
+                <div class="icon-box">🎨</div>
+                <h3>原生体验</h3>
+                <p>完美融入系统设计语言。支持深色模式、托盘集成及开机自启。</p>
+            </div>
+            <div class="card">
+                <div class="icon-box">🔄</div>
+                <h3>一键撤销</h3>
+                <p>手滑了？内置操作日志与一键撤销，随时还原文件状态。</p>
+            </div>
+            <div class="card">
+                <div class="icon-box">🌐</div>
+                <h3>全平台支持</h3>
+                <p>Windows, macOS, Linux 完美运行。一套代码，多端通用。</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="tech-stack" id="tech">
+        <h3 style="color:#94a3b8; font-weight:400; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">Powered by Modern Stack</h3>
+        <div class="tech-logos">
+            <span>🦀 Rust</span>
+            <span>⚛️ Tauri v2</span>
+            <span>💚 Vue 3</span>
+            <span>⚡ Vite</span>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-links">
+            <a href="#">隐私政策</a>
+            <a href="#">GitHub</a>
+            <a href="#">联系支持</a>
+        </div>
+        <p>&copy; 2026 DropSort Pro Team.</p>
+    </footer>
+</div>
+
+<script>
+const demoZone = document.getElementById('demoZone');
+const dropText = document.getElementById('dropText');
+
+demoZone.addEventListener('mouseenter', () => {
+    dropText.classList.add('active');
+    dropText.innerHTML = "<span>🚀 释放鼠标，立即整理!</span>";
+});
+
+demoZone.addEventListener('mouseleave', () => {
+    dropText.classList.remove('active');
+    dropText.innerHTML = "<span>✨ 拖拽文件至此体验智能分类</span>";
+});
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+        }
+    });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.card').forEach((el, index) => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(30px)';
+    el.style.transition = `all 0.6s ease-out ${index * 0.1}s`;
+    observer.observe(el);
+});
+</script>
+</body>
+</html>
