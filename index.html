@@ -71,13 +71,6 @@ nav {
 .nav-links { display: flex; align-items: center; gap: 2rem; }
 .nav-a { color: #94a3b8; text-decoration: none; font-size: 0.95rem; transition: 0.3s; }
 .nav-a:hover { color: #fff; }
-.btn-n {
-    background: rgba(255,255,255,0.1);
-    padding: 0.6rem 1.2rem;
-    border-radius: 50px;
-    color: #fff !important;
-    border: 1px solid rgba(255,255,255,0.1);
-}
 
 .hero {
     flex: 1;
@@ -304,7 +297,6 @@ footer { padding: 3rem 5%; text-align: center; color: #64748b; font-size: 0.9rem
             <a href="#features" class="nav-a">功能特性</a>
             <a href="#how-to-use" class="nav-a">使用说明</a>
             <a href="#tech" class="nav-a">技术架构</a>
-            <a href="#" class="nav-a btn-n">下载 Beta</a>
         </div>
     </nav>
 
@@ -313,7 +305,7 @@ footer { padding: 3rem 5%; text-align: center; color: #64748b; font-size: 0.9rem
         <p class="sub">基于 Electron 构建的下一代桌面文件整理工具。<br>将杂乱的文件拖入窗口，瞬间自动归类。</p>
         
         <div class="cta">
-            <a href="#" class="btn btn-p">免费下载 Windows/macOS</a>
+            <a href="#" class="btn btn-p" id="downloadBtn">免费下载</a>
             <a href="#features" class="btn btn-s">了解更多</a>
         </div>
 
@@ -404,6 +396,33 @@ footer { padding: 3rem 5%; text-align: center; color: #64748b; font-size: 0.9rem
 <script>
 const demoZone = document.getElementById('demoZone');
 const dropText = document.getElementById('dropText');
+const downloadBtn = document.getElementById('downloadBtn');
+
+// 自动识别操作系统并修改下载按钮文字及链接
+function detectOS() {
+    const platform = window.navigator.platform.toLowerCase();
+    const userAgent = window.navigator.userAgent.toLowerCase();
+    
+    const winUrl = 'https://github.com/wwjiang0328/OneCoderX/raw/refs/heads/main/DropSortPro-1.0.0.exe';
+    const macUrl = 'https://github.com/wwjiang0328/OneCoderX/raw/refs/heads/main/DropSortPro-1.0.0.dmg';
+
+    if (platform.indexOf('win') !== -1) {
+        downloadBtn.innerText = '免费下载 Windows 版';
+        downloadBtn.href = winUrl;
+    } else if (platform.indexOf('mac') !== -1 || userAgent.indexOf('mac') !== -1) {
+        downloadBtn.innerText = '免费下载 macOS 版';
+        downloadBtn.href = macUrl;
+    } else if (platform.indexOf('linux') !== -1) {
+        downloadBtn.innerText = '免费下载 Linux 版';
+        // 暂时没有 Linux 链接，可以保留原样或指向其中一个
+        downloadBtn.href = '#';
+    } else {
+        downloadBtn.innerText = '免费下载';
+        downloadBtn.href = winUrl; // 默认给 Windows
+    }
+}
+
+detectOS();
 
 demoZone.addEventListener('mouseenter', () => {
     dropText.classList.add('active');
