@@ -382,13 +382,38 @@ footer { padding: 3rem 5%; text-align: center; color: #64748b; font-size: 0.9rem
         </div>
     </section>
 
-    <section class="tech-stack" id="tech">
-        <h3 style="color:#94a3b8; font-weight:400; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">Powered by Modern Stack</h3>
-        <div class="tech-logos">
-            <span>⚛️ Electron</span>
-            <span>💚 Vue 3</span>
-            <span>⚡ Vite</span>
-            <span>📦 Pinia</span>
+    <section class="tech-stack" id="tech" style="padding: 6rem 5%;">
+        <div class="section-header">
+            <h2>技术架构</h2>
+            <p>Powered by Modern Stack</p>
+        </div>
+        <div class="grid">
+            <div class="card">
+                <div class="icon-box">⚛️</div>
+                <h3>Electron</h3>
+                <p>核心跨平台框架，提供稳定的系统级 API 调用与桌面端原生体验。</p>
+            </div>
+            <div class="card">
+                <div class="icon-box">
+                    <svg width="28" height="28" viewBox="0 0 256 221" version="1.1" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid">
+                        <path d="M204.8,0 L256,0 L128,220.8 L0,0 L50.56,0 L128,133.12 L204.8,0 Z" fill="#41B883"></path>
+                        <path d="M0,0 L128,220.8 L256,0 L204.8,0 L128,133.12 L50.56,0 L0,0 Z" fill="#41B883"></path>
+                        <path d="M50.56,0 L128,133.12 L204.8,0 L157.44,0 L128,51.2 L97.92,0 L50.56,0 Z" fill="#35495E"></path>
+                    </svg>
+                </div>
+                <h3>Vue 3</h3>
+                <p>采用组合式 API 构建响应式界面，确保 UI 交互流畅且易于维护。</p>
+            </div>
+            <div class="card">
+                <div class="icon-box">⚡</div>
+                <h3>Vite</h3>
+                <p>下一代前端构建工具，提供极速的热更新开发体验与优化的生产环境打包。</p>
+            </div>
+            <div class="card">
+                <div class="icon-box">📦</div>
+                <h3>Pinia</h3>
+                <p>Vue 官方状态管理库，负责持久化存储用户配置与整理日志数据。</p>
+            </div>
         </div>
     </section>
 </div>
@@ -405,6 +430,19 @@ function detectOS() {
     
     const winUrl = 'https://github.com/wwjiang0328/OneCoderX/raw/refs/heads/main/DropSortPro-1.0.0.exe';
     const macUrl = 'https://github.com/wwjiang0328/OneCoderX/raw/refs/heads/main/DropSortPro-1.0.0.dmg';
+
+    // 检测是否为移动设备
+    const isMobile = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent);
+
+    if (isMobile) {
+        downloadBtn.innerText = '请在电脑端下载';
+        downloadBtn.href = 'javascript:void(0)';
+        downloadBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            alert('为了获得最佳体验，请在电脑浏览器中打开此页面下载 DropSort Pro 安装包。');
+        });
+        return;
+    }
 
     if (platform.indexOf('win') !== -1) {
         downloadBtn.innerText = '免费下载 Windows 版';
