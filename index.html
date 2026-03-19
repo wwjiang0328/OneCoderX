@@ -195,7 +195,9 @@ p.sub {
     100% { transform: translate(0, 0) scale(0.8); opacity: 0; }
 }
 
-.features { 
+.features,
+.how-to-use,
+.tech-stack { 
     padding: 6rem 5%; 
     width: 100%;
     max-width: 1400px;
@@ -248,14 +250,25 @@ p.sub {
     line-height: 1.6; 
     flex-grow: 1;
 }
-
-.tech-stack {
-    background: rgba(0,0,0,0.2);
-    padding: 3rem 5%;
-    text-align: center;
-    border-top: 1px solid rgba(255,255,255,0.05);
-    border-bottom: 1px solid rgba(255,255,255,0.05);
+.card ul {
+    margin-top: 0.75rem;
+    padding-left: 1rem;
+    color: #cbd5e1;
+    font-size: 0.9rem;
+    line-height: 1.65;
 }
+.card li { margin-bottom: 0.35rem; }
+.pill {
+    display: inline-block;
+    margin-top: 0.75rem;
+    padding: 0.25rem 0.65rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    color: #e2e8f0;
+    background: rgba(99, 102, 241, 0.2);
+    border: 1px solid rgba(129, 140, 248, 0.45);
+}
+
 .tech-logos { 
     display: flex; 
     justify-content: center; 
@@ -322,76 +335,109 @@ footer { padding: 3rem 5%; text-align: center; color: #64748b; font-size: 0.9rem
     <section class="features" id="features">
         <div class="section-header">
             <h2>核心特性</h2>
-            <p>重塑您的数字工作流</p>
+            <p>从智能整理到资源管理，再到 Markdown 笔记，一站式提升个人效率</p>
         </div>
         <div class="grid">
             <div class="card">
                 <div class="icon-box">⚡</div>
-                <h3>Electron 强力驱动</h3>
-                <p>成熟的跨平台架构，极致的 UI 交互体验，让文件整理变得赏心悦目。</p>
+                <h3>智能文件整理</h3>
+                <p>支持拖拽文件、剪切板图片识别与自动分类，秒级完成归档。</p>
+                <ul>
+                    <li>图片/视频/音频/文档自动识别</li>
+                    <li>目标目录可按类型独立配置</li>
+                    <li>重名文件自动避让，避免覆盖</li>
+                </ul>
             </div>
             <div class="card">
                 <div class="icon-box">🧠</div>
-                <h3>智能规则引擎</h3>
-                <p>内置常用模板，支持自定义正则。让每个文件去往它该去的地方。</p>
+                <h3>资源管理中心</h3>
+                <p>将已整理文件入库管理，支持标签、星标、置顶和多条件筛选。</p>
+                <ul>
+                    <li>按分类/标签/时间/大小快速定位</li>
+                    <li>支持创建时间、修改时间、存储时间</li>
+                    <li>可在资源卡片直接打开或定位文件</li>
+                </ul>
             </div>
             <div class="card">
                 <div class="icon-box">🛡️</div>
-                <h3>安全零丢失</h3>
-                <p>原子化操作，智能冲突检测。确保您的珍贵数据万无一失。</p>
+                <h3>Markdown 笔记模块</h3>
+                <p>内置编辑器与目录树，支持导入、创建、重命名、删除与大纲导航。</p>
+                <ul>
+                    <li>所见即所得编辑体验</li>
+                    <li>文档大纲快速跳转</li>
+                    <li>文件树支持右键菜单与快捷键</li>
+                </ul>
             </div>
             <div class="card">
                 <div class="icon-box">🎨</div>
-                <h3>原生体验</h3>
-                <p>完美融入系统设计语言。支持深色模式、托盘集成及开机自启。</p>
+                <h3>实时同步与监听</h3>
+                <p>资源目录变更自动同步到索引，减少手动刷新与数据不一致。</p>
+                <span class="pill">chokidar 实时监听</span>
             </div>
             <div class="card">
                 <div class="icon-box">🔄</div>
-                <h3>一键撤销</h3>
-                <p>手滑了？内置操作日志与一键撤销，随时还原文件状态。</p>
+                <h3>日志与可追溯性</h3>
+                <p>每次整理均记录状态和路径，便于问题排查与过程复盘。</p>
+                <span class="pill">本地日志持久化</span>
             </div>
             <div class="card">
                 <div class="icon-box">🌐</div>
-                <h3>全平台支持</h3>
-                <p>Windows, macOS, Linux 完美运行。一套代码，多端通用。</p>
+                <h3>跨平台桌面体验</h3>
+                <p>基于 Electron 的统一桌面架构，兼顾功能深度与部署效率。</p>
+                <span class="pill">Windows / macOS</span>
             </div>
         </div>
     </section>
 
-    <section class="how-to-use" id="how-to-use" style="padding: 6rem 5%; background: rgba(255,255,255,0.02);">
+    <section class="how-to-use" id="how-to-use">
         <div class="section-header">
             <h2>使用说明</h2>
-            <p>三步开启高效办公</p>
+            <p>三分钟上手：配置目录、开始整理、统一管理与编辑笔记</p>
         </div>
         <div class="grid">
             <div class="card">
                 <div class="icon-box">1</div>
-                <h3>配置路径</h3>
-                <p>首次启动请前往“设置”界面，为图片、文档、视频等不同类型指定存放目录。</p>
+                <h3>初始化设置</h3>
+                <p>在“设置”页配置图片、视频、音频、文档、Markdown、其他目录。</p>
             </div>
             <div class="card">
                 <div class="icon-box">2</div>
-                <h3>拖拽整理</h3>
-                <p>将需要整理的文件（支持多选）直接拖入主窗口，程序将自动识别并移动到对应目录。</p>
+                <h3>拖拽文件整理</h3>
+                <p>把文件拖到主界面（Windows 可用加速球），系统自动识别并归类到目标目录。</p>
             </div>
             <div class="card">
                 <div class="icon-box">3</div>
-                <h3>处理剪切板</h3>
-                <p>对于钉钉、微信等无法直接获取路径的截图，点击“识别并整理剪切板图片”即可一键归类。</p>
+                <h3>剪切板图片处理</h3>
+                <p>对无法直接拖拽的截图，点击“识别并整理剪切板图片”即可快速落盘归档。</p>
+            </div>
+            <div class="card">
+                <div class="icon-box">4</div>
+                <h3>资源管理筛选</h3>
+                <p>在“资源管理”中按分类、标签、时间、大小进行筛选和排序，快速定位文件。</p>
+            </div>
+            <div class="card">
+                <div class="icon-box">5</div>
+                <h3>Markdown 笔记编辑</h3>
+                <p>在“Markdown 编辑”中管理文档树、编辑内容并结合大纲导航提升写作效率。</p>
+            </div>
+            <div class="card">
+                <div class="icon-box">6</div>
+                <h3>检查更新</h3>
+                <p>在“设置”页可检测新版本并一键跳转下载页面，保持应用持续更新。</p>
             </div>
         </div>
     </section>
 
-    <section class="tech-stack" id="tech" style="padding: 6rem 5%;">
+    <section class="tech-stack" id="tech">
         <div class="section-header">
             <h2>技术架构</h2>
-            <p>Powered by Modern Stack</p>
+            <p>稳定的桌面底座 + 现代前端 + 本地数据库，保障性能与可维护性</p>
         </div>
         <div class="grid">
             <div class="card">
-                <div class="icon-box">⚛️</div>
+                <div class="icon-box">🖥️</div>
                 <h3>Electron</h3>
-                <p>核心跨平台框架，提供稳定的系统级 API 调用与桌面端原生体验。</p>
+                <p>负责主进程能力与系统集成：文件移动、托盘、窗口管理、IPC 通信。</p>
             </div>
             <div class="card">
                 <div class="icon-box">
@@ -402,17 +448,27 @@ footer { padding: 3rem 5%; text-align: center; color: #64748b; font-size: 0.9rem
                     </svg>
                 </div>
                 <h3>Vue 3</h3>
-                <p>采用组合式 API 构建响应式界面，确保 UI 交互流畅且易于维护。</p>
+                <p>组合式 API 构建多视图前端，配合 Vue Router 组织“整理 / 资源 / 笔记”模块。</p>
             </div>
             <div class="card">
                 <div class="icon-box">⚡</div>
                 <h3>Vite</h3>
-                <p>下一代前端构建工具，提供极速的热更新开发体验与优化的生产环境打包。</p>
+                <p>提供极速开发体验与高效构建，协同 vite-plugin-electron 管理桌面端构建流程。</p>
             </div>
             <div class="card">
                 <div class="icon-box">📦</div>
                 <h3>Pinia</h3>
-                <p>Vue 官方状态管理库，负责持久化存储用户配置与整理日志数据。</p>
+                <p>统一管理配置、日志与前端状态，提升模块协作与维护效率。</p>
+            </div>
+            <div class="card">
+                <div class="icon-box">🗄️</div>
+                <h3>SQLite</h3>
+                <p>本地资源索引与标签关系存储，支撑筛选、排序、置顶、星标与日志查询。</p>
+            </div>
+            <div class="card">
+                <div class="icon-box">📝</div>
+                <h3>Vditor + chokidar</h3>
+                <p>Vditor 提供 Markdown 编辑能力，chokidar 负责文件变更监听与索引同步。</p>
             </div>
         </div>
     </section>
@@ -428,8 +484,8 @@ function detectOS() {
     const platform = window.navigator.platform.toLowerCase();
     const userAgent = window.navigator.userAgent.toLowerCase();
     
-    const winUrl = 'https://github.com/wwjiang0328/OneCoderX/raw/refs/heads/main/DropSortPro-1.0.0.exe';
-    const macUrl = 'https://github.com/wwjiang0328/OneCoderX/raw/refs/heads/main/DropSortPro-1.0.0.dmg';
+    const winUrl = 'https://github.com/wwjiang0328/OneCoderX/raw/refs/heads/main/DropSortPro-1.1.0.exe';
+    const macUrl = 'https://github.com/wwjiang0328/OneCoderX/raw/refs/heads/main/DropSortPro-1.1.0.dmg';
 
     // 检测是否为移动设备
     const isMobile = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent);
